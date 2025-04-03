@@ -1,25 +1,33 @@
 package edu.eci.arsw.myrestaurant.services;
 
 
+import edu.eci.arsw.myrestaurant.beans.impl.BasicBillCalculator;
 import edu.eci.arsw.myrestaurant.model.Order;
 import edu.eci.arsw.myrestaurant.model.RestaurantProduct;
 import edu.eci.arsw.myrestaurant.beans.BillCalculator;
 import edu.eci.arsw.myrestaurant.model.ProductType;
+import org.springframework.stereotype.Service;
+
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-
+@Service
 public class RestaurantOrderServicesStub implements RestaurantOrderServices {
 
-    
-    BillCalculator calc = null;
+
+    BillCalculator calc = new BasicBillCalculator();
 
     public RestaurantOrderServicesStub() {
     }
 
     public void setBillCalculator(BillCalculator calc) {
         this.calc = calc;
+    }
+
+    public Map<Integer, Order> getTable() throws OrderServicesException{
+        sumTotal();
+        return tableOrders;
     }
 
     @Override
@@ -29,6 +37,15 @@ public class RestaurantOrderServicesStub implements RestaurantOrderServices {
         } else {
             return tableOrders.get(tableNumber);
         }
+    }
+
+    private void sumTotal() throws OrderServicesException {
+        Order o = tableOrders.get(1);
+        Order or = tableOrders.get(3);
+        int total1 = calculateTableBill(1);
+        int total2 = calculateTableBill(3);
+        o.setTotal(total1);
+        or.setTotal(total2);
     }
 
     @Override
@@ -83,11 +100,11 @@ public class RestaurantOrderServicesStub implements RestaurantOrderServices {
     private static final Map<String, RestaurantProduct> productsMap;
 
     private static final Map<Integer, Order> tableOrders;
-    
+
 
     static {
         productsMap = new ConcurrentHashMap<>();
-        tableOrders = new ConcurrentHashMap<>();        
+        tableOrders = new ConcurrentHashMap<>();
         productsMap.put("PIZZA", new RestaurantProduct("PIZZA", 10000, ProductType.DISH));
         productsMap.put("HOTDOG", new RestaurantProduct("HOTDOG", 3000, ProductType.DISH));
         productsMap.put("COKE", new RestaurantProduct("COKE", 1300, ProductType.DRINK));

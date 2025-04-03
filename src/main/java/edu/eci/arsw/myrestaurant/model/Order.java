@@ -19,13 +19,31 @@ public class Order {
     }
     private int tableNumber;
 
+    private int total;
+
+
+
     public Order() {
     }    
     
     public Order(int tableNumber) {
         orderAmountsMap = new ConcurrentHashMap<>();
         this.tableNumber = tableNumber;
+        total = 0;
+
+
     }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+
+
     public void setTableNumber(int tableNumber) {
         this.tableNumber = tableNumber;
     }
