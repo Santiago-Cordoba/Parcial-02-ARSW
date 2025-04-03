@@ -34,7 +34,10 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author hcadavid
  */
-public class OrdersAPIController {
 
+@RestController
+@RequestMapping("/orders")
+public class OrdersAPIController {
+    
     
 }
